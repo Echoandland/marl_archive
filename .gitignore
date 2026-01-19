@@ -1,0 +1,28 @@
+## Generated artifacts / local runs
+output/
+output-*/
+output_*/
+kb/
+logs/
+log/
+*.log
+nohup.out
+*.out
+.env
+.env.*
+!.env.example
+
+## Caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.cache/
+
+## Notebooks
+.ipynb_checkpoints/
+
+## Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
