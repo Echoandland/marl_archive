@@ -149,7 +149,9 @@ class Agent:
                 from google import genai  # lazy import to avoid import-time crash
             except Exception as e:
                 raise RuntimeError("Gemini selected but google-genai not installed") from e
-            api_key = os.environ.get("GENAI_API_KEY", "YOUR_GEMINI_KEY")
+            api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GENAI_API_KEY")
+            if not api_key:
+                raise RuntimeError("Missing GEMINI_API_KEY (or GENAI_API_KEY). See ../env.example")
             self.client = genai.Client(api_key=api_key)
             self._chat = self.client.chats.create(model=self.model_info)
         elif self.model_info in [
@@ -160,9 +162,9 @@ class Agent:
             if OpenAI is None:
                 raise RuntimeError("OpenAI selected but openai package not installed")
             self.client = OpenAI(
-                api_key="dummy",
-                base_url="https://gateway.salesforceresearch.ai/openai/process/v1/",
-                default_headers={"X-Api-Key": os.environ.get("X_API_KEY", "81cb41741637a7b8a772ef63cc760123")}
+                api_key=os.environ.get("OPENAI_API_KEY", "EMPTY"),
+                base_url=os.environ.get("OPENAI_BASE_URL") or f"http://localhost:{port}/v1",
+                default_headers=({"X-Api-Key": os.environ["X_API_KEY"]} if os.environ.get("X_API_KEY") else None),
             )
             self.messages = [{"role": "system", "content": instruction}]
             if examplers is not None:

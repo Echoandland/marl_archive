@@ -153,10 +153,19 @@ class ExperienceKB:
             if OpenAI is None:
                 raise RuntimeError("OpenAI backend requires: pip install openai")
             if self._openai_client is None:
+                # Public-safe: configure via environment variables only
+                # - OPENAI_API_KEY: optional for local endpoints, required for hosted providers
+                # - OPENAI_BASE_URL: optional (e.g., http://localhost:8000/v1)
+                # - X_API_KEY: optional extra header for some gateways (no default)
+                extra_headers = {}
+                x_api_key = os.environ.get("X_API_KEY")
+                if x_api_key:
+                    extra_headers["X-Api-Key"] = x_api_key
+
                 self._openai_client = OpenAI(
-                    api_key="dummy",
-                    base_url="https://gateway.salesforceresearch.ai/openai/process/v1/",
-                    default_headers={"X-Api-Key": os.environ.get("X_API_KEY", "81cb41741637a7b8a772ef63cc760123")}
+                    api_key=os.environ.get("OPENAI_API_KEY", "EMPTY"),
+                    base_url=os.environ.get("OPENAI_BASE_URL"),
+                    default_headers=extra_headers or None,
                 )
         else:
             raise ValueError(f"Unsupported backend: {self.backend}")
