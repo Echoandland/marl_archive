@@ -116,7 +116,6 @@ nohup python main_async_math.py \
 ```bash
 nohup python main_async_math.py \
   --num_samples 1 \
-  --free_recruitment \
   --use_experience \
   > 23_Oct_with_per_expert_kb.log 2>&1 &
 ```
