@@ -1,4 +1,4 @@
-# Math-MDT (RARE) Pipeline — End-to-End
+# Math Pipeline — End-to-End
 
 This repo runs a full loop: **multi-agent solving → scoring → experience extraction → KB build → solving with KB**.
 
