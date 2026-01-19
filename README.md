@@ -97,6 +97,11 @@ At runtime you’ll see messages like:
 
 ## 6) Second pass (with experience)
 
+**Important**:
+- If you run with `--free_recruitment`, you should also enable `--unified_experience` (recommended).  
+  With free recruitment, roles are not fixed/stable across runs, so per-expert KB routing is not reliable.
+- Use per-expert experience mainly when `--free_recruitment` is **disabled** and roles are fixed.
+
 ### 6.1 Unified experience (all agents share one KB)
 ```bash
 nohup python main_async_math.py \
@@ -107,7 +112,7 @@ nohup python main_async_math.py \
   > 23_Oct_with_unified_kb.log 2>&1 &
 ```
 
-### 6.2 Per-expert experience (each role uses its own KB，useful only when free_recruitment is disabled during interaction construction)
+### 6.2 Per-expert experience (each role uses its own KB; use when `--free_recruitment` is disabled)
 ```bash
 nohup python main_async_math.py \
   --num_samples 1 \
